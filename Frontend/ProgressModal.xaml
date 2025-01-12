@@ -1,0 +1,14 @@
+﻿<Window x:Class="Focus_Measurement_Tool.ProgressModal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Focus_Measurement_Tool"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize" WindowStyle="SingleBorderWindow"
+        Title="Loading" Height="150" Width="300" Closing="Window_Closing">
+    <Grid>
+        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">Performing operation... Please wait</TextBlock>
+    </Grid>
+</Window>

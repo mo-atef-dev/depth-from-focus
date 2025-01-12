@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="App.xaml.cs" />
+    <Compile Remove="MainWindow.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="App.xaml" />
+    <None Remove="MainWindow.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NumSharp" Version="0.30.0" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.10.0.20241108" />
+    <PackageReference Include="OpenCvSharp4.WpfExtensions" Version="4.10.0.20241108" />
+  </ItemGroup>
+
+</Project>

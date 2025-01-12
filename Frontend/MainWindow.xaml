@@ -1,0 +1,142 @@
+﻿<Window x:Class="Focus_Measurement_Tool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Focus_Measurement_Tool"
+        xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+        xmlns:model="clr-namespace:Model;assembly=Model"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="Depth from focus" Height="500" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TabControl>
+            <TabItem Header="Main View">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="400"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Main Image" Grid.Column="0" Grid.Row="0">
+                        <Image x:Name="MainImage" MouseLeftButtonDown="MainImage_MouseLeftButtonDown"/>
+                    </GroupBox>
+                    <GroupBox Header="True Depth Image" Grid.Column="0" Grid.Row="1">
+                        <Image x:Name="TrueDepthImage"/>
+                    </GroupBox>
+                    <GroupBox Header="Image List"  Grid.Column="1" Grid.Row="0">
+                        <ListView x:Name="ImagesList" ItemsSource="{Binding ImageNames}"
+                              SelectionChanged="ListView_SelectionChanged">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={local:FileNameConverter}}"/>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </GroupBox>
+                    <Grid Grid.Column="1" Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Header="Focus Measurements" Grid.Row="0">
+                            <lvc:CartesianChart x:Name="FocusChart"/>
+                        </GroupBox>
+                        <GroupBox Header="Settings" Grid.Row="1">
+                            <ScrollViewer>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Content="Initial depth (m): "/>
+                                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="InitialDepthBox" Text="0.3"/>
+                                    <Label Grid.Row="1" Content="Depth increment (m): "/>
+                                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="DepthIncrementBox" Text="0.1"/>
+                                    <Label Grid.Row="2" Content="Focus measurement kernel size: "/>
+                                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="FocusKernelSizeBox" Text="5"/>
+                                    <Label Grid.Row="3" Content="Pre filter kernel size: "/>
+                                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="PreFilterKernelSizeBox" Text="3"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Depth Map">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Normalized Depth Map" Grid.Row="0" Grid.Column="0">
+                        <Image x:Name="DepthImage"/>
+                    </GroupBox>
+                    <GroupBox Header="Normalized Error Map" Grid.Row="0" Grid.Column="2">
+                        <Image x:Name="ErrorImage"/>
+                    </GroupBox>
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <lvc:CartesianChart x:Name="ErrorHistogramChart" Grid.Column="1" ZoomMode="X"/>
+                        <StackPanel Grid.Column="0" Orientation="Vertical" Margin="5">
+                            <Label Content="Error Statistics" FontWeight="Bold"/>
+                            <Label x:Name="MaxErrorLabel" ContentStringFormat="Max error: {0}"/>
+                            <Label x:Name="MeanErrorLabel" ContentStringFormat="Mean error: {0}"/>
+                            <Label x:Name="MedianErrorLabel" ContentStringFormat="Median error: {0}"/>
+                        </StackPanel>
+                    </Grid>
+                    <GroupBox Grid.Column="1" Grid.Row="1"
+                            Header="Settings">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Content="Filter type: "/>
+                            <ComboBox Grid.Column="1" ItemsSource="{local:EnumCollection EnumType=model:FilterType}"
+                                      SelectedIndex="3" x:Name="FilterTypeChoice"/>
+                            <Label Grid.Row="1" Content="Kernel size: "/>
+                            <TextBox Grid.Row="1" Grid.Column="1" x:Name="KernelSizeBox"
+                                     Text="5"/>
+                            <Button Margin="0 5 0 5" Grid.Row="4" Content="Recalculate Filtering"
+                                    x:Name="RecalculateFilterButton" Click="RecalculateFilterButton_Click"/>
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10">
+            <Button Content="Browse Images" Click="Button_Click"/>
+            <Button Content="Browse True Depth Map" Margin="20 0 0 0" Click="ButtonTrueDepth_Click"/>
+            <Button Content="Calculate Depth" Margin="20 0 0 0" Click="ButtonDepth_Click"/>
+            <Button Content="Save Depth Result" Margin="20 0 0 0" Click="ButtonSave_Click"/>
+            <Button Content="Save Normalized Error Result" Margin="20 0 0 0" Click="ButtonSaveNormalizedError_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
