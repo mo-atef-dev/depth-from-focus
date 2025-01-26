@@ -2,6 +2,30 @@
 
 A C# WPF GUI application to study obtaining depth information from multiple images at different focus distances.
 
+## Table of contents
+
+- [Depth from Focus](#depth-from-focus)
+  - [Table of contents](#table-of-contents)
+  - [Theory](#theory)
+    - [Introduction](#introduction)
+    - [Depth from focus](#depth-from-focus-1)
+    - [Focus measurement](#focus-measurement)
+      - [Window size](#window-size)
+      - [Focus measurement method](#focus-measurement-method)
+  - [Result](#result)
+    - [Computer generated scene (no stacking)](#computer-generated-scene-no-stacking)
+    - [Computer generated scene (stacking)](#computer-generated-scene-stacking)
+    - [Real world scene](#real-world-scene)
+  - [Building](#building)
+  - [Application](#application)
+  - [Note on project architecture](#note-on-project-architecture)
+  - [Appendix A: Focus measurement analysis](#appendix-a-focus-measurement-analysis)
+    - [Modified laplacian](#modified-laplacian)
+    - [Variance](#variance)
+    - [Gradient norm](#gradient-norm)
+    - [Conclusion](#conclusion)
+  - [Appendix B: Stacking](#appendix-b-stacking)
+
 ## Theory
 
 ### Introduction
